@@ -88,7 +88,7 @@ public class ScenarioExecutionEngineAsync {
         // Compile testcase for execution
         ExecutionRequest executionRequestProcessed = new ExecutionRequest(testCasePreProcessors.apply(executionRequest.testCase), executionRequest.environment);
         // Initialize execution history
-        ExecutionHistory.Execution storedExecution = storeInitialReport(executionRequest.testCase.id(), executionRequest.testCase.metadata().title());
+        ExecutionHistory.Execution storedExecution = storeInitialReport(executionRequest.testCase.id(), executionRequest.testCase.metadata().title(), executionRequest.environment);
         // Start engine execution
         Pair<Observable<StepExecutionReportCore>, Long> followResult = callEngineExecution(executionRequestProcessed, storedExecution);
         // Build execution observable
@@ -150,7 +150,7 @@ public class ScenarioExecutionEngineAsync {
         executionHistoryRepository.update(scenarioId, execution);
     }
 
-    private ExecutionHistory.Execution storeInitialReport(String scenarioId, String title) {
+    private ExecutionHistory.Execution storeInitialReport(String scenarioId, String title, String environment) {
         DetachedExecution detachedExecution = ImmutableExecutionHistory.DetachedExecution.builder()
             .time(LocalDateTime.now())
             .duration(0L)
